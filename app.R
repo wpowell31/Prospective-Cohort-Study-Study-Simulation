@@ -59,12 +59,13 @@ ui <- fluidPage(
       
       # Output: Histogram ----
       imageOutput("dukeLogo"),
-      plotOutput(outputId = "RRboxplot"),
-      plotOutput(outputId = "RDboxplot"),
-      plotOutput(outputId = "ORboxplot"),
       textOutput("TrueRR"),
       textOutput("TrueRD"),
-      textOutput("TrueOR")
+      textOutput("TrueOR"),
+      plotOutput(outputId = "RRboxplot"),
+      plotOutput(outputId = "RDboxplot"),
+      plotOutput(outputId = "ORboxplot")
+      
       
     )
   )
@@ -230,6 +231,8 @@ server <- function(input, output) {
                          input$fexposure[1], input$fnonexposure[1], 25),
             main = 'Histogram of Simulated Relative Risk',
          xlab = 'RR')
+    abline(v=RR(input$num_exposure[1], input$exposure_risk[1],
+                input$num_nonexposure[1], input$nonexposure_risk[1]), col='blue', lwd=2)
   })
   
   output$RDboxplot <- renderPlot({
@@ -237,6 +240,8 @@ server <- function(input, output) {
                          input$fexposure[1], input$fnonexposure[1], 25),
             main = 'Histogram of Simulated Risk Difference',
          xlab = 'RD')
+    abline(v=RD(input$num_exposure[1], input$exposure_risk[1],
+                input$num_nonexposure[1], input$nonexposure_risk[1]), col='green', lwd=2)
   })
   
   output$ORboxplot <- renderPlot({
@@ -244,6 +249,8 @@ server <- function(input, output) {
                          input$fexposure[1], input$fnonexposure[1], 25),
             main = 'Histogram of Simulated Odds Ratios',
          xlab = 'OR')
+    abline(v=OR(input$num_exposure[1], input$exposure_risk[1],
+                input$num_nonexposure[1], input$nonexposure_risk[1]), col='red', lwd=2)
   })
   
   output$dukeLogo <- renderImage({
@@ -258,12 +265,3 @@ server <- function(input, output) {
 
 
 shinyApp(ui = ui, server = server)
-
-
-
-
-#Need table of summary of simulation - need to be arranged well - 
-# Put this in the plan
-
-
-
